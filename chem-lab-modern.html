@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050818">
+<title>Chem Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ color-scheme:dark;
+ --bg:#050818;--m:#9aa7d1;--a:#22d3ee;--l:rgba(150,170,255,.16);--t:#e9edff;
+ --vi:#8b5cf6;--bl:#3b82f6;--cy:#22d3ee;
+ --grad:linear-gradient(135deg,#8b5cf6 0%,#3b82f6 52%,#22d3ee 100%);
+ --glass:linear-gradient(150deg,rgba(255,255,255,.085),rgba(255,255,255,.025));
+ --tile:rgba(255,255,255,.045);
+ --r:22px;
+ --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;color:var(--t);font:15px/1.6 "Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;background:var(--bg);overflow-x:hidden;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+ background:
+  radial-gradient(900px 600px at 6% -8%,rgba(139,92,246,.40),transparent 60%),
+  radial-gradient(800px 600px at 96% 2%,rgba(59,130,246,.34),transparent 60%),
+  radial-gradient(900px 700px at 62% 112%,rgba(34,211,238,.20),transparent 60%),
+  linear-gradient(180deg,#070c26,#050818)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background-image:linear-gradient(rgba(150,170,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(150,170,255,.055) 1px,transparent 1px);
+ background-size:48px 48px;
+ -webkit-mask-image:radial-gradient(ellipse at 50% 18%,#000 18%,transparent 72%);mask-image:radial-gradient(ellipse at 50% 18%,#000 18%,transparent 72%)}
+::selection{background:rgba(139,92,246,.55)}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:50;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;
+ background:linear-gradient(180deg,rgba(7,12,38,.86),rgba(7,12,38,.58));
+ -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+ border-bottom:1px solid var(--l)}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.7),rgba(34,211,238,.7),transparent);opacity:.7}
+.hd{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px 20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;margin-right:auto;border-radius:14px}
+.brand svg{width:44px;height:44px;flex:none;filter:drop-shadow(0 0 12px rgba(59,130,246,.55));transition:transform .5s var(--ease)}
+.brand:hover svg{transform:rotate(60deg)}
+h1{font:700 26px/1.1 "Sora",sans-serif;letter-spacing:-.02em;margin:0;background:linear-gradient(100deg,#fff 10%,#c4b5fd 45%,#67e8f9 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top small{color:var(--m);display:block;font-size:12px;margin-top:2px}
+nav{display:flex;gap:4px;padding:4px;border-radius:16px;background:rgba(5,8,24,.5);border:1px solid var(--l)}
+nav a{color:var(--m);text-decoration:none;font-weight:600;font-size:13.5px;padding:7px 14px;border-radius:12px;transition:color .2s,background .2s,transform .2s;white-space:nowrap}
+nav a:hover{color:#fff;background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(34,211,238,.22));transform:translateY(-1px)}
+.student{display:flex;align-items:center;gap:11px;padding:6px 16px 6px 7px;border-radius:999px;background:var(--glass);border:1px solid var(--l);transition:border-color .3s,box-shadow .3s}
+.student:hover{border-color:rgba(34,211,238,.5);box-shadow:0 0 24px -4px rgba(34,211,238,.4)}
+.student b{display:block;font:700 13.5px/1.2 "Sora",sans-serif;letter-spacing:.02em}
+.student small{margin:1px 0 0;font-size:11.5px;font-variant-numeric:tabular-nums}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--grad);color:#050818;font:700 13px "Sora",sans-serif;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
+
+/* ---------- layout ---------- */
+main{max-width:1240px;margin:0 auto;padding:24px 16px 10px;display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:980px){main{grid-template-columns:380px minmax(0,1fr);align-items:start}
+ .side{position:sticky;top:104px;max-height:calc(100vh - 124px);overflow:auto}}
+section,.stack>*{scroll-margin-top:96px}
+.stack{display:grid;gap:20px;min-width:0}
+.grid2{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+@media(min-width:760px) and (max-width:979px){.grid2{grid-template-columns:1fr}}
+@media(min-width:1180px){.grid2{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}}
+
+/* ---------- glass cards ---------- */
+.card{position:relative;background:var(--glass);border:1px solid var(--l);border-radius:var(--r);padding:22px;min-width:0;
+ -webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%);
+ box-shadow:0 24px 60px -26px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.09);
+ transition:border-color .35s,box-shadow .35s}
+.card:hover{border-color:rgba(120,170,255,.38);box-shadow:0 26px 70px -24px rgba(59,130,246,.38),inset 0 1px 0 rgba(255,255,255,.12)}
+h2{margin:0 0 14px;font:700 15px/1.3 "Sora",sans-serif;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
+h2::before{content:"";width:4px;height:17px;border-radius:4px;background:var(--grad);flex:none;box-shadow:0 0 12px rgba(59,130,246,.7)}
+#extra h2:not(:first-child){margin-top:24px}
+p{margin:0}
+#desc{color:#c9d2f3;line-height:1.7;max-width:75ch}
+
+/* ---------- inputs & buttons ---------- */
+input,button{font:inherit;border-radius:14px;border:1px solid var(--l);background:rgba(5,8,24,.6);color:var(--t);padding:11px 15px}
+input{width:100%;transition:border-color .25s,box-shadow .25s,background .25s}
+input::placeholder{color:#6f7ba3}
+input:hover{border-color:rgba(150,170,255,.34)}
+input:focus{outline:none;border-color:var(--cy);box-shadow:0 0 0 4px rgba(34,211,238,.16);background:rgba(5,8,24,.85)}
+button:focus-visible,a:focus-visible,.item:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+button{cursor:pointer;font-weight:600;font-size:14px;background:rgba(255,255,255,.055);transition:transform .2s var(--ease),border-color .2s,background .2s,box-shadow .25s,filter .2s}
+button:hover{border-color:rgba(34,211,238,.6);background:rgba(34,211,238,.1);transform:translateY(-2px);box-shadow:0 8px 22px -10px rgba(34,211,238,.55)}
+button:active{transform:translateY(0) scale(.97)}
+button.on,button.go{background:var(--grad);border-color:transparent;color:#050818;font-weight:700}
+button.on:hover,button.go:hover{background:var(--grad);filter:brightness(1.1) saturate(1.1);box-shadow:0 10px 28px -8px rgba(99,102,241,.8)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#go,#run{width:100%;padding:13px 16px}
+.err{color:#fb7185;margin-top:8px;min-height:1.2em;font-size:13.5px}
+#st{font-size:13.5px}
+.side h2:not(:first-child){margin-top:26px}
+
+/* ---------- compound list ---------- */
+.list{max-height:250px;overflow:auto;margin-top:6px;padding:2px 6px 2px 0;display:grid;gap:4px;align-content:start}
+.item{padding:10px 14px;border-radius:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid transparent;transition:background .2s,border-color .2s,transform .2s var(--ease)}
+.item b{font-weight:600}
+.item span{color:var(--m);font-size:12px;font-variant-numeric:tabular-nums}
+.item:hover{background:rgba(139,92,246,.14);transform:translateX(4px)}
+.item.sel{background:linear-gradient(100deg,rgba(139,92,246,.30),rgba(34,211,238,.14));border-color:rgba(34,211,238,.38);box-shadow:inset 3px 0 0 var(--cy)}
+.item.sel span{color:#c7f3fb}
+.list::-webkit-scrollbar,.side::-webkit-scrollbar{width:8px}
+.list::-webkit-scrollbar-thumb,.side::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#8b5cf6,#22d3ee);border-radius:8px}
+.list::-webkit-scrollbar-track,.side::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:8px}
+
+/* ---------- 3D lab ---------- */
+#v{width:100%;height:clamp(320px,54vh,500px);position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(139,92,246,.35);
+ background:
+  radial-gradient(circle at 50% 46%,rgba(99,102,241,.34),transparent 62%),
+  radial-gradient(circle at 85% 95%,rgba(34,211,238,.16),transparent 50%),
+  linear-gradient(180deg,#0a1132,#050818);
+ box-shadow:inset 0 0 70px rgba(59,130,246,.18),0 18px 50px -22px rgba(99,102,241,.7);transition:box-shadow .4s,border-color .4s}
+#v:hover{border-color:rgba(34,211,238,.55);box-shadow:inset 0 0 80px rgba(34,211,238,.18),0 18px 60px -20px rgba(34,211,238,.5)}
+#v::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background-image:linear-gradient(rgba(150,170,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(150,170,255,.07) 1px,transparent 1px);background-size:34px 34px;
+ -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 10%,transparent 75%);mask-image:radial-gradient(circle at 50% 50%,#000 10%,transparent 75%)}
+#v canvas{z-index:1}
+.vname{position:absolute;left:14px;top:14px;z-index:5;pointer-events:none;display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(5,8,24,.62);border:1px solid var(--l);font:600 13px "Sora",sans-serif;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.vname::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)}
+.vhint{position:absolute;right:14px;bottom:12px;z-index:5;pointer-events:none;font-size:12px;color:var(--m);padding:4px 12px;border-radius:999px;background:rgba(5,8,24,.55)}
+.vwrap{position:relative}
+#styles{display:flex;width:fit-content;max-width:100%;gap:4px;padding:5px;margin-top:16px;background:rgba(5,8,24,.55);border:1px solid var(--l);border-radius:18px}
+#styles button{border-color:transparent;background:transparent;border-radius:13px;padding:9px 16px}
+#styles button:hover{background:rgba(255,255,255,.08);box-shadow:none;transform:none}
+#styles button.on{background:var(--grad);color:#050818;box-shadow:0 6px 18px -8px rgba(99,102,241,.9)}
+.tools{margin-top:12px}
+.tools button{border-radius:999px;padding:8px 16px}
+
+/* ---------- data tables ---------- */
+table{width:100%;border-collapse:collapse}
+td{padding:10px 10px;border-bottom:1px solid rgba(150,170,255,.11);vertical-align:top;transition:background .2s}
+td:first-child{color:var(--m);width:38%;border-radius:10px 0 0 10px}
+td:last-child{word-break:break-word;overflow-wrap:anywhere;font-weight:600;border-radius:0 10px 10px 0}
+table.kv tr:hover td{background:rgba(139,92,246,.12)}
+table.kv tr:last-child td{border-bottom:0}
+table.tiles,table.tiles tbody{display:block}
+table.tiles tbody{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px}
+table.tiles tr{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:16px;background:var(--tile);border:1px solid var(--l);min-width:0;transition:transform .25s var(--ease),border-color .25s,background .25s,box-shadow .25s}
+table.tiles tr:hover{transform:translateY(-3px);border-color:rgba(34,211,238,.5);background:linear-gradient(150deg,rgba(139,92,246,.18),rgba(34,211,238,.08));box-shadow:0 12px 28px -14px rgba(34,211,238,.5)}
+table.tiles td{border:0;padding:0;width:auto;border-radius:0;background:none!important}
+table.tiles td:first-child{font-size:12px;color:var(--m);width:auto}
+table.tiles td:last-child{font-size:15.5px;font-weight:700;color:#fff}
+#img{width:100%;max-width:300px;background:#fff;border-radius:18px;padding:8px;margin:16px auto 0;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 18px 44px -14px rgba(99,102,241,.8)}
+#csout{color:var(--m);margin-top:12px;font-size:13.5px;line-height:1.6;word-break:break-word}
+a{color:#67e8f9;text-underline-offset:3px;transition:color .2s}
+a:hover{color:#fff}
+.links a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1px solid var(--l);background:rgba(255,255,255,.05);text-decoration:none;font-weight:600;font-size:13.5px;transition:transform .2s var(--ease),border-color .2s,background .2s,box-shadow .25s}
+.links a:hover{transform:translateY(-2px);border-color:rgba(34,211,238,.6);background:rgba(34,211,238,.12);box-shadow:0 8px 22px -10px rgba(34,211,238,.6)}
+
+/* ---------- property profile bars ---------- */
+.bar{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:13px}
+.bar b{width:150px;flex:none;font-weight:600;color:var(--m)}
+.bar i{flex:1;height:10px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
+.bar u{display:block;height:100%;background:var(--grad);border-radius:6px;box-shadow:0 0 14px rgba(59,130,246,.8);transform-origin:left center;animation:grow .9s var(--ease) both}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---------- footer ---------- */
+footer{max-width:1240px;margin:10px auto 0;padding:10px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.foot{display:grid;gap:22px;grid-template-columns:1fr;align-items:center}
+@media(min-width:860px){.foot{grid-template-columns:minmax(0,1fr) auto}}
+.foot p{color:var(--m);font-size:13px;line-height:1.7;max-width:70ch}
+.profile h2{margin-bottom:10px}
+.profile dl{margin:0;display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.profile dl div{padding:10px 16px;border-radius:16px;background:var(--tile);border:1px solid var(--l);transition:border-color .25s,transform .25s var(--ease)}
+.profile dl div:hover{border-color:rgba(34,211,238,.5);transform:translateY(-2px)}
+.profile dt{font-size:12px;color:var(--m)}
+.profile dd{margin:2px 0 0;font:700 15px "Sora",sans-serif;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+/* ---------- responsive ---------- */
+@media(max-width:979px){
+ nav{order:3;width:100%;overflow-x:auto;scrollbar-width:none}
+ nav::-webkit-scrollbar{display:none}
+ nav a{flex:1;text-align:center}
+}
+@media(max-width:560px){
+ .card{padding:18px;border-radius:20px}
+ h1{font-size:22px}
+ .brand svg{width:38px;height:38px}
+ .student{padding-right:12px}
+ .student b{font-size:12.5px}
+ .student small{font-size:11px}
+ .av{width:32px;height:32px;font-size:11px}
+ .top small.sub{display:none}
+ #styles{width:100%;flex-wrap:wrap}
+ #styles button{flex:1 1 40%}
+ .bar{flex-wrap:wrap;gap:6px}.bar b{width:100%}
+ .vhint{display:none}
+ .profile dl{grid-template-columns:1fr}
+ table.tiles tbody{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+</style></head><body id="top">
+<header class="top">
+<div class="hd">
+<a class="brand" href="#top" aria-label="Chem Lab home">
+<svg viewBox="0 0 40 40" fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linejoin="round"><defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a78bfa"/><stop offset=".55" stop-color="#3b82f6"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><path d="M20 4l13 7.5v15L20 34 7 26.5v-15z"/><path d="M20 4v13.5l13 9M20 17.5l-13 9" stroke-opacity=".45" stroke-width="1.4"/><circle cx="20" cy="4" r="2.6" fill="#a78bfa" stroke="none"/><circle cx="33" cy="26.5" r="2.6" fill="#22d3ee" stroke="none"/><circle cx="7" cy="26.5" r="2.6" fill="#3b82f6" stroke="none"/><circle cx="20" cy="17.5" r="2.2" fill="#fff" stroke="none"/></svg>
+<div><h1>Chem Lab</h1><small class="sub">PubChem × ChemSpider × 3D</small></div>
+</a>
+<nav aria-label="Sections"><a href="#search">Search</a><a href="#lab">3D Lab</a><a href="#identity">Identity</a><a href="#properties">Properties</a></nav>
+<div class="student" title="Student profile"><span class="av" aria-hidden="true">YK</span><div><b>YOGESH K</b><small>Reg. No. RE26110026050289</small></div></div>
+</div>
+</header>
+<main>
+<section class="card side" id="search">
+<h2>Compound Search</h2>
+<input id="q" placeholder="Any molecule or element: aspirin, gold, Fe, 50-78-2…" autocomplete="off">
+<div class="row"><button class="go" id="go">Search PubChem + ChemSpider</button></div>
+<div class="err" id="st" style="color:var(--m)"></div>
+<div class="list" id="list"></div>
+<h2 style="margin-top:18px">ChemSpider API key (optional)</h2>
+<input id="key" placeholder="Free key from developer.rsc.org" spellcheck="false">
+<h2 style="margin-top:18px">Custom SMILES</h2>
+<input id="smi" value="CCO" spellcheck="false">
+<div class="row"><button class="go" id="run">Analyze molecule</button></div>
+<div class="err" id="err"></div>
+</section>
+<section class="stack">
+<div class="card" id="lab">
+<h2>3D Molecule Lab</h2>
+<div class="vwrap"><div id="v"></div><div class="vname" id="vname">Ethanol</div><div class="vhint">Drag to rotate · Scroll to zoom</div></div>
+<div class="row" id="styles">
+<button data-s="bs" class="on">Ball &amp; stick</button><button data-s="st">Stick</button><button data-s="sp">Space filling</button><button data-s="ln">Wireframe</button>
+</div>
+<div class="row tools">
+<button id="bh" class="on">Hydrogens</button><button id="bl">Labels</button><button id="bspin">Spin</button><button id="bsurf">Surface</button><button id="brs">Reset view</button>
+</div>
+</div>
+<div class="card" id="elcard" style="display:none"><h2>Periodic Table · Element</h2><table id="eltab" class="tiles"></table></div>
+<div class="grid2">
+<div class="card" id="identity"><h2>Identity Card</h2><table id="ids" class="kv"></table><img id="img" alt="2D structure" style="display:none"><div id="csout"></div>
+<div class="row links"><a id="lpc" target="_blank" rel="noopener">Open in PubChem ↗</a><a id="lcs" target="_blank" rel="noopener">Open in ChemSpider ↗</a></div></div>
+<div class="card" id="properties"><h2>Properties</h2><table id="props" class="tiles"></table></div>
+</div>
+<div class="card" id="extra" style="display:none"><h2>Description</h2><p id="desc"></p><h2>Property profile</h2><div id="stats"></div><h2>Experimental properties</h2><table id="exp" class="kv"></table></div>
+</section>
+</main>
+<footer>
+<div class="card foot">
+<p>Live search uses PubChem’s public API (and ChemSpider’s API if you add a key). It needs internet and works when this file is opened from your device or a hosted site.</p>
+<div class="profile"><h2>Student Profile</h2><dl><div><dt>Name</dt><dd>YOGESH K</dd></div><div><dt>Register number</dt><dd>RE26110026050289</dd></div></dl></div>
+</div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+<script>
+const DB=[["Ethanol","CCO","64-17-5"],["Benzene","c1ccccc1","71-43-2"],["Phenol","Oc1ccccc1","108-95-2"],["Acetic acid","CC(=O)O","64-19-7"],["Aspirin","CC(=O)Oc1ccccc1C(=O)O","50-78-2"],["Caffeine","CN1C=NC2=C1C(=O)N(C(=O)N2C)C","58-08-2"],["Paracetamol","CC(=O)Nc1ccc(O)cc1","103-90-2"],["Acetone","CC(C)=O","67-64-1"],["Glycine","NCC(=O)O","56-40-6"],["Toluene","Cc1ccccc1","108-88-3"],["Acetylene","C#C","74-86-2"],["Methane","C","74-82-8"],["Formaldehyde","C=O","50-00-0"],["Pyridine","c1ccncc1","110-86-1"]];
+const VAL={C:4,N:3,O:2,S:2,P:3,F:1,Cl:1,Br:1,I:1,B:3,H:1},RAD={H:.31,C:.76,N:.71,O:.66,S:1.05,P:1.07,F:.57,Cl:1.02,Br:1.2,I:1.39,B:.85},MASS={H:1.008,C:12.011,N:14.007,O:15.999,S:32.06,P:30.974,F:18.998,Cl:35.45,Br:79.904,I:126.904,B:10.81};
+function parse(s){
+ const A=[],B=[],st=[],rg={};let p=-1,ord=0,i=0;
+ const bond=(a,b,o)=>{o=o||((A[a].ar&&A[b].ar)?1.5:1);B.push([a,b,o])};
+ const add=(sym,ar,h)=>{A.push({s:sym,ar,h});const k=A.length-1;if(p>=0)bond(p,k,ord);p=k;ord=0};
+ while(i<s.length){const c=s[i];
+  if(c=='('){st.push(p)}else if(c==')'){p=st.pop()}
+  else if(c=='-')ord=1;else if(c=='=')ord=2;else if(c=='#')ord=3;else if(c==':')ord=1.5;
+  else if(/\d/.test(c)){if(rg[c]!==undefined){bond(p,rg[c],ord);delete rg[c];ord=0}else rg[c]=p}
+  else if(c=='['){const e=s.indexOf(']',i);const m=s.slice(i+1,e).match(/^\d*([A-Z][a-z]?|[a-z]{1,2})@*(H\d?)?/);if(!m)throw 0;
+   const ar=m[1]===m[1].toLowerCase();const sym=m[1][0].toUpperCase()+m[1].slice(1);const h=m[2]?(m[2].length>1?+m[2][1]:1):0;add(sym,ar,h);i=e}
+  else if(s.substr(i,2)=='Cl'||s.substr(i,2)=='Br'){add(s.substr(i,2),false,null);i++}
+  else if('BCNOPSFI'.includes(c))add(c,false,null);
+  else if('cnops'.includes(c))add(c.toUpperCase(),true,null);
+  else if(c=='/'||c=='\\'||c=='@'||c=='+'){}else throw 0;
+  i++}
+ if(!A.length||st.length||Object.keys(rg).length)throw 0;
+ const n=A.length,sum=Array(n).fill(0);B.forEach(([a,b,o])=>{sum[a]+=o;sum[b]+=o});
+ for(let k=0;k<n;k++){const v=VAL[A[k].s];if(!v)throw 0;let h=A[k].h;if(h===null)h=Math.max(0,Math.round(v-sum[k]-.01));for(let j=0;j<h;j++){A.push({s:"H",ar:false});B.push([k,A.length-1,1])}}
+ return{A,B}}
+function embed(M){
+ const{A,B}=M,n=A.length,nb=A.map(()=>[]),bd={},rest=[],key=(a,b)=>a<b?a+"_"+b:b+"_"+a;
+ B.forEach(([a,b,o])=>{const d=RAD[A[a].s]+RAD[A[b].s]-(o-1)*.2;bd[key(a,b)]=d;nb[a].push([b,o]);nb[b].push([a,o]);rest.push([a,b,d])});
+ const fixed=new Set(Object.keys(bd));
+ nb.forEach((L,c)=>{if(L.length<2)return;const trip=L.some(x=>x[1]==3),sp2=A[c].ar||L.some(x=>x[1]>1);
+  const deg=trip?180:(sp2?120:109.5),cs=Math.cos(deg*Math.PI/180);
+  for(let x=0;x<L.length;x++)for(let y=x+1;y<L.length;y++){const a=L[x][0],b=L[y][0],d1=bd[key(a,c)],d2=bd[key(b,c)];
+   rest.push([a,b,Math.sqrt(d1*d1+d2*d2-2*d1*d2*cs)]);fixed.add(key(a,b))}});
+ const P=A.map(()=>[0,1,2].map(()=>(Math.random()-.5)*Math.cbrt(n)*2));
+ for(let it=0;it<500;it++){const F=P.map(()=>[0,0,0]);
+  rest.forEach(([a,b,d])=>{const v=[0,1,2].map(k=>P[b][k]-P[a][k]),l=Math.hypot(...v)||.01,f=(l-d)/l*.25;for(let k=0;k<3;k++){F[a][k]+=v[k]*f;F[b][k]-=v[k]*f}});
+  for(let a=0;a<n;a++)for(let b=a+1;b<n;b++){if(fixed.has(key(a,b)))continue;const v=[0,1,2].map(k=>P[b][k]-P[a][k]),l=Math.hypot(...v)||.01;
+   if(l<2.7){const f=(2.7-l)/l*.08;for(let k=0;k<3;k++){F[a][k]-=v[k]*f;F[b][k]+=v[k]*f}}}
+  for(let a=0;a<n;a++)for(let k=0;k<3;k++)P[a][k]+=F[a][k]}
+ const c=[0,1,2].map(k=>P.reduce((s,p)=>s+p[k],0)/n);return P.map(p=>p.map((x,k)=>x-c[k]))}
+function molblock(M,P){const f=x=>x.toFixed(4).padStart(10);
+ let t="mol\n  Gotham\n\n"+String(M.A.length).padStart(3)+String(M.B.length).padStart(3)+"  0  0  0  0  0  0  0  0999 V2000\n";
+ M.A.forEach((a,i)=>t+=f(P[i][0])+f(P[i][1])+f(P[i][2])+" "+a.s.padEnd(3)+" 0  0  0  0  0  0  0  0  0  0  0  0\n");
+ M.B.forEach(([a,b,o])=>t+=String(a+1).padStart(3)+String(b+1).padStart(3)+String(o==1.5?4:o).padStart(3)+"  0\n");return t+"M  END\n"}
+function props(M,smi){
+ const cnt={};M.A.forEach(a=>cnt[a.s]=(cnt[a.s]||0)+1);
+ const order=["C","H",...Object.keys(cnt).filter(x=>x!="C"&&x!="H").sort()];
+ const formula=order.filter(x=>cnt[x]).map(x=>x+(cnt[x]>1?cnt[x]:"")).join("");
+ const mw=M.A.reduce((s,a)=>s+MASS[a.s],0);
+ const hv=M.A.filter(a=>a.s!="H").length;
+ const nH=(i)=>M.B.filter(([a,b])=>(a==i&&M.A[b].s=="H")||(b==i&&M.A[a].s=="H")).length;
+ let hbd=0,hba=0;M.A.forEach((a,i)=>{if(a.s=="N"||a.s=="O"){hba++;if(nH(i))hbd++}});
+ const pi=M.B.reduce((s,[a,b,o])=>s+(o-1),0);const sig=M.B.length;
+ return{formula,mw,hv,all:M.A.length,hbd,hba,sig,pi,rings:M.B.length-(hv-1),rows:[["Molecular formula",formula],["Molecular weight",mw.toFixed(2)+" g/mol"],["Total atoms (with H)",M.A.length],["Heavy atoms",hv],["Sigma (σ) bonds",sig],["Pi (π) bonds",pi],["Total bonds (σ + π)",sig+pi],["H-bond donors",hbd],["H-bond acceptors (N+O)",hba],["Ring count",Math.max(0,M.B.filter(b=>M.A[b[0]].s!="H"&&M.A[b[1]].s!="H").length-(hv-1))]]}}
+let V,sty="bs",showH=true,lab=false,spin=false,surf=false,cur=null,curName="";
+const $=id=>document.getElementById(id);
+function draw(){if(!cur)return;{const nb=$("vname");if(nb)nb.textContent=curName||"Custom molecule"}V.removeAllSurfaces();V.removeAllLabels();
+ const S={bs:{stick:{radius:.14},sphere:{scale:.28}},st:{stick:{radius:.2}},sp:{sphere:{scale:1}},ln:{line:{linewidth:2}}}[sty];
+ V.setStyle({},S);if(!showH)V.setStyle({elem:"H"},{});
+ if(lab)cur.M.A.forEach((a,i)=>{if(a.s!="H")V.addLabel(a.s,{position:{x:cur.P[i][0],y:cur.P[i][1],z:cur.P[i][2]},fontSize:13,fontColor:"#67e8f9",backgroundOpacity:.35,backgroundColor:"#000"})});
+ if(surf)V.addSurface($3Dmol.SurfaceType.VDW,{opacity:.55,color:"#67e8f9"});
+ V.render()}
+function analyze(smi,name){
+ $("err").textContent="";$("img").style.display="none";$("csout").textContent="";$("elcard").style.display="none";$("extra").style.display="none";let M;
+ try{M=parse(smi.trim())}catch(e){$("err").textContent="Could not read that SMILES. Check brackets, rings and element symbols.";return}
+ const P=embed(M),pr=props(M,smi);cur={M,P};curName=name||smi;
+ V.clear();V.addModel(molblock(M,P),"sdf");V.zoomTo();draw();
+ const cas=(DB.find(d=>d[1]==smi.trim())||[])[2]||"—";
+ $("ids").innerHTML=[["Name",name||"Custom molecule"],["Formula",pr.formula],["SMILES",smi.trim()],["CAS number",cas],["Mol. weight",pr.mw.toFixed(2)]].map(r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>").join("");
+ $("props").innerHTML=pr.rows.map(r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>").join("");
+ const term=encodeURIComponent(name||smi.trim());
+ $("lpc").href="https://pubchem.ncbi.nlm.nih.gov/#query="+term;$("lcs").href="https://www.chemspider.com/Search.aspx?q="+term}
+const PUG="https://pubchem.ncbi.nlm.nih.gov/rest/pug/";let ELS=null;
+const jg=async u=>{const r=await fetch(u);if(!r.ok)throw new Error("HTTP "+r.status);return r};
+function fs(o){if(!o||typeof o!="object")return null;if(typeof o.String=="string")return o.String;for(const k in o){const r=fs(o[k]);if(r)return r}return null}
+async function elements(){if(ELS)return ELS;const j=await(await jg(PUG+"periodictable/JSON")).json(),c=j.Table.Columns.Column;ELS=j.Table.Row.map(r=>{const o={};r.Cell.forEach((v,i)=>o[c[i]]=v);return o});return ELS}
+function showEl(e){$("eltab").innerHTML=[["Name",e.Name+" ("+e.Symbol+")"],["CPK color",'<span style="display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;background:#'+e.CPKHexColor+'"></span> #'+e.CPKHexColor],["Atomic number",e.AtomicNumber],["Protons / electrons",e.AtomicNumber],["Neutrons (approx.)",Math.round(+e.AtomicMass)-e.AtomicNumber],["Atomic mass",e.AtomicMass],["Group block",e.GroupBlock],["Standard state",e.StandardState],["Electron configuration",e.ElectronConfiguration],["Electronegativity",e.Electronegativity],["Atomic radius (pm)",e.AtomicRadius],["Ionization energy (eV)",e.IonizationEnergy],["Electron affinity (eV)",e.ElectronAffinity],["Oxidation states",e.OxidationStates],["Melting point (K)",e.MeltingPoint],["Boiling point (K)",e.BoilingPoint],["Density (g/cm³)",e.Density],["Year discovered",e.YearDiscovered]].filter(r=>r[1]!==undefined&&r[1]!=="").map(r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>").join("");$("elcard").style.display="block"}
+function sdfModel(t){const L=t.split("\n"),na=+L[3].substr(0,3),nb=+L[3].substr(3,3),A=[],B=[],P=[];
+ for(let i=0;i<na;i++){const l=L[4+i];P.push([+l.substr(0,10),+l.substr(10,10),+l.substr(20,10)]);A.push({s:l.substr(31,3).trim()})}
+ for(let i=0;i<nb;i++){const l=L[4+na+i],o=+l.substr(6,3);B.push([+l.substr(0,3)-1,+l.substr(3,3)-1,o==4?1.5:o])}
+ return{M:{A,B},P}}
+async function compound(q){
+ const p=(await(await jg(PUG+"compound/name/"+encodeURIComponent(q)+"/property/Title,IUPACName,MolecularFormula,MolecularWeight,ExactMass,CanonicalSMILES,XLogP,TPSA,HBondDonorCount,HBondAcceptorCount,RotatableBondCount,HeavyAtomCount,Charge,Complexity,AtomStereoCount,BondStereoCount,CovalentUnitCount,Volume3D,InChIKey/JSON")).json()).PropertyTable.Properties[0];
+ let sdf,is3d=false;for(const t of["3d","2d"]){try{sdf=await(await jg(PUG+"compound/cid/"+p.CID+"/SDF?record_type="+t)).text();is3d=t=="3d";break}catch(e){}}
+ let cas="—",syn=[];try{const s=(await(await jg(PUG+"compound/cid/"+p.CID+"/synonyms/JSON")).json()).InformationList.Information[0].Synonym;syn=s.slice(0,6);cas=s.find(x=>/^\d{2,7}-\d\d-\d$/.test(x))||"—"}catch(e){}
+ let desc="";try{const I=(await(await jg(PUG+"compound/cid/"+p.CID+"/description/JSON")).json()).InformationList.Information;desc=(I.find(x=>x.Description)||{}).Description||""}catch(e){}
+ const exp={};await Promise.all(["Melting Point","Boiling Point","Density","Solubility","Flash Point","Vapor Pressure"].map(async h=>{try{const j=await(await jg(PUG.replace("/pug/","/pug_view/")+"data/compound/"+p.CID+"/JSON?heading="+encodeURIComponent(h))).json();const t=fs(j.Record.Section);if(t)exp[h]=t.slice(0,160)}catch(e){}}));
+ return{p,sdf,is3d,cas,syn,desc,exp}}
+function render({p,sdf,is3d,cas,syn,desc,exp},q){
+ const smi=p.ConnectivitySMILES||p.CanonicalSMILES||p.SMILES||"";
+ let{M,P}=sdfModel(sdf),mb=sdf;
+ if(!is3d){try{const m=parse(smi),e=embed(m);M=m;P=e;mb=molblock(m,e)}catch(x){}}
+ cur={M,P};curName=p.Title||q;V.clear();V.addModel(mb,"sdf");V.zoomTo();draw();$("smi").value=smi;
+ const row=r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>",v=x=>x===undefined?"—":x;
+ $("ids").innerHTML=[["Name",curName],["IUPAC name",v(p.IUPACName)],["Formula",p.MolecularFormula],["SMILES",smi],["InChIKey",v(p.InChIKey)],["CAS number",cas],["PubChem CID",p.CID],["Synonyms",syn.join(", ")||"—"]].map(row).join("");
+ $("img").src=PUG+"compound/cid/"+p.CID+"/PNG?image_size=300x300";$("img").style.display="block";
+ const sg=M.B.length,pi=M.B.reduce((s,b)=>s+b[2]-1,0);
+ $("props").innerHTML=[["Molecular weight",p.MolecularWeight+" g/mol"],["XLogP",v(p.XLogP)],["TPSA (Å²)",v(p.TPSA)],["H-bond donors",v(p.HBondDonorCount)],["H-bond acceptors",v(p.HBondAcceptorCount)],["Rotatable bonds",v(p.RotatableBondCount)],["Total atoms (with H)",M.A.length],["Sigma (σ) bonds",sg],["Pi (π) bonds",pi],["Total bonds (σ + π)",sg+pi],["Exact mass",v(p.ExactMass)],["Heavy atoms",v(p.HeavyAtomCount)],["Formal charge",v(p.Charge)],["Complexity",v(p.Complexity)],["Stereo atoms",v(p.AtomStereoCount)],["Stereo bonds",v(p.BondStereoCount)],["Covalent units",v(p.CovalentUnitCount)],["3D volume (Å³)",v(p.Volume3D)]].map(row).join("");
+ $("lpc").href="https://pubchem.ncbi.nlm.nih.gov/compound/"+p.CID;$("lcs").href="https://www.chemspider.com/Search.aspx?q="+encodeURIComponent(curName);
+ const num=x=>+x||0,cl=x=>Math.max(0,Math.min(1,x));
+ const vio=(num(p.MolecularWeight)>500)+(num(p.XLogP)>5)+(num(p.HBondDonorCount)>5)+(num(p.HBondAcceptorCount)>10);
+ $("props").insertAdjacentHTML("beforeend",row(["Lipinski rule of five",vio?vio+" violation(s)":"Pass (0 violations)"]));
+ {const t={};let tot=0,ok=true;M.A.forEach(a=>{if(!MASS[a.s])ok=false;else{t[a.s]=(t[a.s]||0)+MASS[a.s];tot+=MASS[a.s]}});if(ok)$("props").insertAdjacentHTML("beforeend",row(["Composition by mass",Object.keys(t).map(k=>k+" "+(t[k]/tot*100).toFixed(1)+"%").join(", ")]))}
+ $("stats").innerHTML=[["Mass",num(p.MolecularWeight)/500],["Lipophilicity (XLogP)",(num(p.XLogP)+3)/8],["Polarity (TPSA)",num(p.TPSA)/140],["Donors",num(p.HBondDonorCount)/5],["Acceptors",num(p.HBondAcceptorCount)/10],["Complexity",num(p.Complexity)/600]].map(z=>'<div class="bar"><b>'+z[0]+'</b><i><u style="width:'+Math.round(cl(z[1])*100)+'%"></u></i></div>').join("");
+ $("desc").textContent=desc||"No description available on PubChem.";
+ const ek=Object.keys(exp);$("exp").innerHTML=ek.length?ek.map(k=>row([k,exp[k]])).join(""):row(["—","No experimental values found on PubChem."]);
+ $("extra").style.display="block";renderList()}
+async function chemspider(name){const k=$("key").value.trim(),o=$("csout");
+ if(!k){o.textContent="ChemSpider: add a free API key (developer.rsc.org) in the left panel to pull its record here. The link above still works.";return}
+ o.textContent="Asking ChemSpider…";
+ try{const H={apikey:k,"Content-Type":"application/json"},U="https://api.rsc.org/compounds/v1/";
+  const a=await(await jg2(U+"filter/name",{method:"POST",headers:H,body:JSON.stringify({name})})).json();let r;
+  for(let i=0;i<8;i++){r=await(await jg2(U+"filter/"+a.queryId+"/results",{headers:H})).json();if(r.results)break;await new Promise(z=>setTimeout(z,700))}
+  const id=r.results[0],d=await(await jg2(U+"records/"+id+"/details?fields=CommonName,Formula,MolecularWeight",{headers:H})).json();
+  o.innerHTML="ChemSpider ID <b>"+id+"</b> · "+d.commonName+" · "+String(d.formula).replace(/[_{}]/g,"")+' · <a href="https://www.chemspider.com/Chemical-Structure.'+id+'.html" target="_blank" rel="noopener">open record ↗</a>';
+  try{localStorage.setItem("csk",k)}catch(e){}
+ }catch(e){o.textContent="ChemSpider did not answer. Check the API key; the RSC server may also block calls made from a browser."}}
+const jg2=async(u,o)=>{const r=await fetch(u,o);if(!r.ok)throw new Error("HTTP "+r.status);return r};
+async function live(q){if(!q)return;$("st").textContent="Searching PubChem…";$("err").textContent="";$("elcard").style.display="none";$("extra").style.display="none";
+ const[el,cp]=await Promise.allSettled([elements().then(L=>L.find(e=>e.Name.toLowerCase()==q.toLowerCase()||e.Symbol.toLowerCase()==q.toLowerCase())),compound(q)]);
+ const net=[el,cp].some(r=>r.status=="rejected"&&r.reason instanceof TypeError),e=el.status=="fulfilled"?el.value:null;
+ if(e)showEl(e);
+ if(!e&&cp.status!="fulfilled"){$("st").textContent="";$("err").textContent=net?"Can’t reach PubChem. Live search needs internet and works from the downloaded file or a hosted copy, not inside the claude.ai preview.":"Nothing found for “"+q+"”. Try another name, symbol or CAS number.";return}
+ $("st").textContent=(e?"Element found. ":"")+(cp.status=="fulfilled"?"Compound found on PubChem.":"No compound record with that name.");
+ if(cp.status=="fulfilled"){render(cp.value,q);chemspider(cp.value.p.Title||q)}}
+function renderList(){const q=$("q").value.toLowerCase();
+ $("list").innerHTML="";DB.filter(d=>(d[0]+d[2]).toLowerCase().includes(q)||props(parse(d[1])).formula.toLowerCase().includes(q)).forEach(d=>{
+  const e=document.createElement("div");e.className="item"+(d[0]==curName?" sel":"");e.innerHTML="<b>"+d[0]+"</b><span>"+d[2]+"</span>";
+  e.onclick=()=>{$("smi").value=d[1];analyze(d[1],d[0]);renderList()};$("list").appendChild(e)})}
+function init(){
+ V=$3Dmol.createViewer($("v"),{backgroundColor:"#060a1c",backgroundAlpha:0});window.addEventListener("resize",()=>{try{V.resize()}catch(e){}});
+ $("q").oninput=renderList;$("go").onclick=()=>live($("q").value.trim());$("q").onkeydown=e=>{if(e.key=="Enter")$("go").click()};try{$("key").value=localStorage.getItem("csk")||""}catch(e){}
+ $("run").onclick=()=>{curName="";analyze($("smi").value);renderList()};
+ $("smi").onkeydown=e=>{if(e.key=="Enter")$("run").click()};
+ document.querySelectorAll("#styles button").forEach(b=>b.onclick=()=>{sty=b.dataset.s;document.querySelectorAll("#styles button").forEach(x=>x.classList.toggle("on",x==b));draw()});
+ const tg=(id,fn)=>{$(id).onclick=()=>{const on=fn();$(id).classList.toggle("on",on);draw()}};
+ tg("bh",()=>showH=!showH);tg("bl",()=>lab=!lab);tg("bsurf",()=>surf=!surf);
+ $("bspin").onclick=()=>{spin=!spin;V.spin(spin);$("bspin").classList.toggle("on",spin)};
+ $("brs").onclick=()=>{V.zoomTo();V.render()};
+ curName="Ethanol";renderList();analyze("CCO","Ethanol")}
+window.addEventListener("load",()=>{try{init()}catch(e){$("err").textContent="3D viewer failed to load."}});
+</script></body></html>
